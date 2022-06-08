@@ -1,55 +1,42 @@
 #include <stdio.h>
 
-int ary[10][10], completed[10], n, cost = 0;
+int a[10][10], visited[10], n, cost = 0;
 
-void takeInput()
+void get()
 {
     int i, j;
-
-    printf("Enter the number of villages: ");
+    printf("Enter No. of Cities: ");
     scanf("%d", &n);
-
-    printf("\nEnter the Cost Matrix\n");
-
+    printf("\nEnter Cost Matrix\n");
     for (i = 0; i < n; i++)
     {
-        printf("\nEnter Elements of Row: %d\n", i + 1);
-
+        printf("\nEnter Elements of Row # : %d\n", i + 1);
         for (j = 0; j < n; j++)
-            scanf("%d", &ary[i][j]);
-
-        completed[i] = 0;
+            scanf("%d", &a[i][j]);
+        visited[i] = 0;
     }
-
-    printf("\n\nThe cost list is:");
-
+    printf("\n\nThe cost list is:\n\n");
     for (i = 0; i < n; i++)
     {
-        printf("\n");
-
+        printf("\n\n");
         for (j = 0; j < n; j++)
-            printf("\t%d", ary[i][j]);
+            printf("\t%d", a[i][j]);
     }
 }
 
 void mincost(int city)
 {
     int i, ncity;
-
-    completed[city] = 1;
-
-    printf("%d--->", city + 1);
+    visited[city] = 1;
+    printf("%d -->", city + 1);
     ncity = least(city);
-
     if (ncity == 999)
     {
         ncity = 0;
         printf("%d", ncity + 1);
-        cost += ary[city][ncity];
-
+        cost += a[city][ncity];
         return;
     }
-
     mincost(ncity);
 }
 
@@ -57,32 +44,33 @@ int least(int c)
 {
     int i, nc = 999;
     int min = 999, kmin;
-
     for (i = 0; i < n; i++)
     {
-        if ((ary[c][i] != 0) && (completed[i] == 0))
-            if (ary[c][i] + ary[i][c] < min)
+        if ((a[c][i] != 0) && (visited[i] == 0))
+            if (a[c][i] < min)
             {
-                min = ary[i][0] + ary[c][i];
-                kmin = ary[c][i];
+                min = a[i][0] + a[c][i];
+                kmin = a[c][i];
                 nc = i;
             }
     }
-
     if (min != 999)
         cost += kmin;
-
     return nc;
+}
+
+void put()
+{
+    printf("\n\nMinimum cost:");
+    printf("%d", cost);
 }
 
 int main()
 {
-    takeInput();
 
-    printf("\n\nThe Path is:\n");
-    mincost(0); // passing 0 because starting vertex
-
-    printf("\n\nMinimum cost is %d\n ", cost);
-
+    get();
+    printf("\n\nThe Path is:\n\n");
+    mincost(0);
+    put();
     return 0;
 }
