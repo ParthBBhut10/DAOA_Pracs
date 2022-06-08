@@ -1,17 +1,14 @@
 #include <stdio.h>
 #include <limits.h>
 
-// Matrix Ai has dimension p[i-1] x p[i] for i = 1..n
-
 int MatrixChainMultiplication(int p[], int n)
 {
     int m[n][n];
     int i, j, k, L, q;
 
     for (i = 1; i < n; i++)
-        m[i][i] = 0; // number of multiplications are 0(zero) when there is only one matrix
+        m[i][i] = 0;
 
-    // Here L is chain length. It varies from length 2 to length n.
     for (L = 2; L < n; L++)
     {
         for (i = 1; i < n - L + 1; i++)
@@ -24,13 +21,13 @@ int MatrixChainMultiplication(int p[], int n)
                 q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
                 if (q < m[i][j])
                 {
-                    m[i][j] = q; // if number of multiplications found less that number will be updated.
+                    m[i][j] = q;
                 }
             }
         }
     }
 
-    return m[1][n - 1]; // returning the final answer which is M[1][n]
+    return m[1][n - 1];
 }
 
 int main()
