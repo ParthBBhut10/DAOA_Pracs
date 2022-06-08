@@ -1,76 +1,71 @@
 #include <stdio.h>
+int d[100];
+int j;
+int n;
+int c[100][100];
+int m[50];
 int main()
 {
-    int n, i, j;
-    int m;
-    printf("Enter size of subproblem  : ");
-    scanf("%d", &m);
-
-    printf("Enter no. of denominator : ");
+    printf("Enter the no of denominations :- ");
     scanf("%d", &n);
-    int d[n];
-    d[0] = 0;
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        printf("Enter denominator %d : ", i + 1);
-        scanf("%d", &d[i + 1]);
+        printf("Enter the denomination :- ");
+        scanf("%d", &d[i]);
     }
+    printf("Enter the size of subproblem :- ");
+    scanf("%d", &j);
 
-    int c[n + 1][m + 1];
-    for (int i = 0; i <= n; i++)
+    for (int x = 0; x <= j; x++)
     {
-        for (int j = 0; j <= m; j++)
+        for (int i = 0; i <= n; i++)
         {
-            // c[i][j]=ans(c[][],d[],i,j);
-
-            if (i == 0)
-            {
-                c[i][j] = 0;
-            }
-            else if (j == 0)
-            {
-                c[i][j] = 0;
-            }
-            else if (i == 1)
-            {
-                c[i][j] = 1 + c[1][j - d[i]];
-                // printf("anywhere");
-            }
-
-            else if (j < d[i])
-            {
-                c[i][j] = c[i - 1][j];
-                // printf("hello");
-            }
-
+            if (i == 0 || x == 0)
+                c[i][x] = 0;
+            else if (x < d[i])
+                c[i][x] = c[i - 1][x];
+            else if (i == x || i == 1)
+                c[i][x] = 1 + c[1][x - d[i]];
             else
             {
-                if (c[i - 1][j] < (1 + c[i][j - d[i]]))
-                {
-                    c[i][j] = c[i - 1][j];
-                }
+                int a = c[i - 1][x];
+                int b = 1 + c[i][x - d[i]];
+                if (a < b)
+                    c[i][x] = a;
                 else
-                {
-
-                    c[i][j] = 1 + c[i][j - d[i]];
-                }
+                    c[i][x] = b;
             }
         }
     }
-    j = m;
-    printf("solution is :");
-    i = n;
+    for (int i = 0; i <= n; i++)
+    {
+        printf("\n");
+        for (int x = 0; x <= j; x++)
+        {
+            printf("%d  ", c[i][x]);
+        }
+    }
+    printf(" ");
+    printf("\nThe solution of no of coins to be selected : %d", c[n][j]);
+    int e = 0;
+
     while (j != 0)
     {
-        if (c[i][j] != c[i - 1][m])
+
+        if (c[n][j] != c[n - 1][j])
         {
-            printf("%d ", d[i]);
-            j = j - d[i];
+            m[e] = d[n];
+            j = j - d[n];
+            e++;
         }
         else
-        {
-            i--;
-        }
+            n--;
+    }
+
+    printf("\nTherefore solution set is: ");
+    for (int i = 0; i < e; i++)
+    {
+        printf("%d ", m[i]);
     }
     return 0;
 }
